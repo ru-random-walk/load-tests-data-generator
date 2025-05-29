@@ -47,7 +47,10 @@ tasks.named('test') {
 			"-Djavax.net.ssl.trustStore=",
 			"-Djavax.net.ssl.trustStorePassword="
 	]
-	systemProperty 'userCount', System.getProperty('userCount')
+	def userCount = gradle.startParameter.systemPropertiesArgs.get('userCount')
+	if (userCount != null) {
+		systemProperty 'userCount', userCount
+	}
 	useJUnitPlatform() {
 		def includedTags = project.hasProperty('includeTags') ? project.property('includeTags') : null
 		def excludedTags = project.hasProperty('excludeTags') ? project.property('excludeTags') : null

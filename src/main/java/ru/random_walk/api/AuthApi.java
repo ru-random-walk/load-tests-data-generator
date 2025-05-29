@@ -1,5 +1,8 @@
 package ru.random_walk.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,13 +22,15 @@ public class AuthApi {
 
     public String refreshAuthToken(String refreshToken) {
         var mapOfRequestParams = Map.of("grant_type", "refresh_token", "refresh_token", refreshToken);
-
+        RestAssured.defaultParser = Parser.JSON;
+        RestAssured.useRelaxedHTTPSValidation();
         return given()
                 .baseUri("https://random-walk.ru:44424/auth")
                 .auth().basic(authApiConfig.getUsername(), authApiConfig.getPassword())
                 .contentType("application/x-www-form-urlencoded")
                 .formParams(mapOfRequestParams)
                 .post("/token")
-                .as(TokenResponse.class).getAccessToken();
+                .as(TokenResponse.class)
+                .getAccessToken();
     }
 }

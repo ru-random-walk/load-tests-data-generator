@@ -64,6 +64,13 @@ jobs:
             -DuserCount=${{ github.event.inputs.userCount }} \
             -PincludeTags=${{ github.event.inputs.testTag }}
 
+      - name: Generate test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-report
+          path: ./build/reports/tests/test
+
       - name: Upload users data
         if: ${{ github.event.inputs.testTag == 'websocket-load' }}
         uses: actions/upload-artifact@v4

@@ -1,4 +1,4 @@
-name: Random Walk E2E
+name: Load Data Generator
 
 on:
   workflow_dispatch:

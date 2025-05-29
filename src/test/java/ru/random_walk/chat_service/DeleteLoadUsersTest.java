@@ -2,9 +2,11 @@ package ru.random_walk.chat_service;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.random_walk.LoadTestsDataGeneratorApplication;
+import ru.random_walk.chat_service.extension.RestAssuredExtension;
 import ru.random_walk.database.auth.entities.AuthUser;
 import ru.random_walk.database.auth.functions.AuthUserFunctions;
 import ru.random_walk.database.auth.functions.RefreshTokenFunctions;
@@ -12,6 +14,7 @@ import ru.random_walk.database.auth.functions.UserRoleFunctions;
 import ru.random_walk.database.chat.functions.ChatMembersFunctions;
 import ru.random_walk.service.ChatService;
 
+@ExtendWith(RestAssuredExtension.class)
 @SpringBootTest(classes = LoadTestsDataGeneratorApplication.class)
 @Tag("websocket-load-delete")
 public class DeleteLoadUsersTest {

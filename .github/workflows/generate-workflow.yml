@@ -59,7 +59,7 @@ jobs:
           chmod +x gradlew
           ./gradlew clean --no-daemon
           echo "Running tests with tag: ${{ github.event.inputs.testTag }}"
-          echo "Generating so many users: ${{ github.events.inputs.userCount }}"
+          echo "Generating so many users: ${{ github.event.inputs.userCount }}"
           ./gradlew test \
             -DuserCount=${{ github.event.inputs.userCount }} \
             -PincludeTags=${{ github.event.inputs.testTag }}

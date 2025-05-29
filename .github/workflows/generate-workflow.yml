@@ -1,4 +1,4 @@
-name: Random Walk E2E
+name: Load Data Generator
 
 on:
   workflow_dispatch:
@@ -59,7 +59,7 @@ jobs:
           chmod +x gradlew
           ./gradlew clean --no-daemon
           echo "Running tests with tag: ${{ github.event.inputs.testTag }}"
-          ./gradlew test -DuserCount=${{ github.events.inputs.userCount}} \
+          ./gradlew test -DuserCount=${{ github.event.inputs.userCount}} \
             -PincludeTags=${{ github.event.inputs.testTag }}
 
       - name: Upload users data

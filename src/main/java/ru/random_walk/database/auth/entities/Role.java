@@ -1,0 +1,20 @@
+package ru.random_walk.database.auth.entities;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import jakarta.persistence.*;
+
+@Data
+@NoArgsConstructor
+@Entity
+@Table(name = "role")
+public class Role {
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    private Integer id;
+
+    @Column(name = "name", unique = true, nullable = false)
+    private String name;
+
+}

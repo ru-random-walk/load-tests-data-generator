@@ -1,0 +1,70 @@
+name: Random Walk E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      testTag:
+        description: Тег для запуска определенного скрипта
+        required: true
+        type: choice
+        options:
+          - websocket-load
+          - websocket-load-delete
+      userCount:
+        description: Количество генерируемых пользователей
+        required: false
+
+jobs:
+  checkout-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+  build-proj-and-run-tests:
+    runs-on: ubuntu-latest
+    env:
+      RW_DB_URL: ${{ secrets.RW_DB_URL }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRV_KEY }}
+      SSH_REMOTE_HOST: ${{ secrets.SSH_REMOTE_HOST }}
+      SSH_REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}
+      RW_AUTH_DB_USERNAME: ${{ secrets.RW_AUTH_DB_USERNAME }}
+      RW_AUTH_DB_PASSWORD: ${{ secrets.RW_AUTH_DB_PASSWORD }}
+      RW_CLUB_DB_USERNAME: ${{ secrets.RW_CLUB_DB_USERNAME }}
+      RW_CLUB_DB_PASSWORD: ${{ secrets.RW_CLUB_DB_PASSWORD }}
+      RW_CHAT_DB_USERNAME: ${{ secrets.RW_CHAT_DB_USERNAME }}
+      RW_CHAT_DB_PASSWORD: ${{ secrets.RW_CHAT_DB_PASSWORD }}
+      RW_MATCHER_DB_USERNAME: ${{ secrets.RW_MATCHER_DB_USERNAME }}
+      RW_MATCHER_DB_PASSWORD: ${{ secrets.RW_MATCHER_DB_PASSWORD }}
+      RW_API_AUTH_USERNAME: ${{ secrets.RW_API_AUTH_USERNAME }}
+      RW_API_AUTH_PASSWORD: ${{ secrets.RW_API_AUTH_PASSWORD }}
+      AUTOTEST_TOKEN: ${{ secrets.AUTOTEST_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'oracle'
+
+      - name: Build and Test Java Project
+        run: |
+          chmod +x gradlew
+          ./gradlew clean --no-daemon
+          echo "Running tests with tag: ${{ github.event.inputs.testTag }}"
+          ./gradlew test -DuserCount=${{ github.events.inputs.userCount}} \
+            -PincludeTags=${{ github.event.inputs.testTag }}
+
+      - name: Upload users data
+        if: ${{ github.event.inputs.testTag == 'websocket-load' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatUsers.json
+          path: src/main/resources/chatUsers.json

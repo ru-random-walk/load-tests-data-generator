@@ -83,7 +83,7 @@ public class CreateFileForWebsocketLoadTest {
                     data.setChatId(chatId.toString());
                     return data;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         JsonMapper jsonMapper = new JsonMapper();
         try {

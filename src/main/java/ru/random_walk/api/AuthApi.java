@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.random_walk.config.AuthApiConfig;
+import ru.random_walk.config.filter.BasicAuthFilter;
 import ru.random_walk.model.TokenResponse;
 
 import java.util.Map;
@@ -23,7 +24,7 @@ public class AuthApi {
         var mapOfRequestParams = Map.of("grant_type", "refresh_token", "refresh_token", refreshToken);
         var response = given()
                 .baseUri("https://random-walk.ru:44424/auth")
-                .auth().basic(authApiConfig.getUsername(), authApiConfig.getPassword())
+                .filter(new BasicAuthFilter(authApiConfig.getUsername(), authApiConfig.getPassword()))
                 .contentType("application/x-www-form-urlencoded")
                 .formParams(mapOfRequestParams)
                 .post("/token")

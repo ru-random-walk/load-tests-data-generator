@@ -3,7 +3,7 @@ package ru.random_walk.database.auth.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor

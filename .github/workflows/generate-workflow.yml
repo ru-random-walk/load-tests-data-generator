@@ -51,8 +51,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'oracle'
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Build and Test Java Project
         run: |

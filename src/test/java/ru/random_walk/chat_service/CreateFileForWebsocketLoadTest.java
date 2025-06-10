@@ -58,7 +58,7 @@ public class CreateFileForWebsocketLoadTest {
     @Test
     void createFile() throws Exception  {
         String usersCount = System.getProperty("userCount");
-        int finalUsersCount = (usersCount == null || usersCount.isEmpty()) ? 1 : Integer.parseInt(usersCount);
+        int finalUsersCount = (usersCount == null || usersCount.isEmpty()) ? 5 : Integer.parseInt(usersCount);
 
         List<JsonData> users = IntStream.range(0, finalUsersCount)
                 .parallel()

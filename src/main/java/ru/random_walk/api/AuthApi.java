@@ -1,6 +1,7 @@
 package ru.random_walk.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.path.json.JsonPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,18 @@ public class AuthApi {
 
     public String refreshAuthToken(String refreshToken) {
         var mapOfRequestParams = Map.of("grant_type", "refresh_token", "refresh_token", refreshToken);
-        return given()
+        var response = given()
                 .baseUri("https://random-walk.ru:44424/auth")
                 .auth().basic(authApiConfig.getUsername(), authApiConfig.getPassword())
                 .contentType("application/x-www-form-urlencoded")
                 .formParams(mapOfRequestParams)
                 .post("/token")
-                .getBody().jsonPath().get("access_token");
+                .then().log().ifError().extract().response();
+        String body = response.getBody().asString();
+        if (body == null || body.isBlank()) {
+            throw new IllegalStateException("Empty or null response body for token refresh");
+        }
+
+        return JsonPath.from(body).getString("access_token");
     }
 }

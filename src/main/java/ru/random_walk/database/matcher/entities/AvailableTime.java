@@ -4,11 +4,11 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
-import jakarta.persistence.*;
-import org.hibernate.type.SqlTypes;
+import javax.persistence.*;
+
+import org.hibernate.annotations.TypeDef;
 
 import java.time.LocalDate;
 import java.time.OffsetTime;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @NoArgsConstructor
 @Table(name = "available_time")
-//@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class AvailableTime {
 
     @Id
@@ -48,8 +48,7 @@ public class AvailableTime {
     @Column(name = "search_area_meters")
     private Integer searchAreaMeters;
 
-    //@Type(type = "jsonb")
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Type(type = "jsonb")
     @Column(name = "clubs_in_filter")
     private List<UUID> clubsInFilter;
 

@@ -18,12 +18,10 @@ public class UserRoleFunctions {
         return userRoleRepository.findAll();
     }
 
-    @Transactional(transactionManager = "authTransactionManager")
     public void save(UserRole userRole) {
         userRoleRepository.save(userRole);
     }
 
-    @Transactional(transactionManager = "authTransactionManager")
     public void delete(UUID id) {
         userRoleRepository.deleteById(id);
     }

@@ -31,11 +31,9 @@ public class AuthUserFunctions {
         return authUserRepository.getAllByPartOfUsername(partOfUsername + "%");
     }
 
-    @Transactional(transactionManager = "authTransactionManager")
     public void save(AuthUser authUser) {
         authUserRepository.save(authUser);
     }
 
-    @Transactional(transactionManager = "authTransactionManager")
     public void delete(UUID id) {authUserRepository.deleteById(id);}
 }

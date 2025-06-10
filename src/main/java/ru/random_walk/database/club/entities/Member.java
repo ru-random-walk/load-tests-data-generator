@@ -3,7 +3,7 @@ package ru.random_walk.database.club.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import ru.random_walk.database.club.entities.prkeys.MemberPK;
 import ru.random_walk.enums.MemberRole;
 

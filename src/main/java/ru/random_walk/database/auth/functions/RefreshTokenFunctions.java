@@ -18,12 +18,10 @@ public class RefreshTokenFunctions {
         return refreshTokenRepository.getReferenceById(id);
     }
 
-    @Transactional(transactionManager = "authTransactionManager")
     public void save(RefreshToken refreshToken) {
         refreshTokenRepository.save(refreshToken);
     }
 
-    @Transactional(transactionManager = "authTransactionManager")
     public void delete(UUID id) {
         refreshTokenRepository.deleteById(id);
     }

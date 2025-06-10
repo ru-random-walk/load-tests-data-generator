@@ -4,10 +4,9 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
+import javax.persistence.*;
 import org.hibernate.annotations.Type;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.TypeDef;
 import ru.random_walk.model.Payload;
 
 import java.time.LocalDateTime;
@@ -16,15 +15,14 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "message")
-//@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @NoArgsConstructor
 public class Message {
 
     @Id
     private UUID id;
 
-    //@Type(type = "jsonb")
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Type(type = "jsonb")
     @Column(name = "payload", nullable = false)
     private Payload payload;
 

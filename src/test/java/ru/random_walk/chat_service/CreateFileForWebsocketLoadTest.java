@@ -3,11 +3,13 @@ package ru.random_walk.chat_service;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.random_walk.LoadTestsDataGeneratorApplication;
 import ru.random_walk.api.AuthApi;
 import ru.random_walk.api.ChatApi;
+import ru.random_walk.chat_service.extension.RestAssuredExtension;
 import ru.random_walk.config.AutotestUserConfig;
 import ru.random_walk.database.auth.entities.AuthUser;
 import ru.random_walk.database.auth.entities.RefreshToken;
@@ -27,6 +29,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.lang.Thread.sleep;
+
+@ExtendWith(RestAssuredExtension.class)
 @SpringBootTest(classes = LoadTestsDataGeneratorApplication.class)
 @Tag("websocket-load")
 public class CreateFileForWebsocketLoadTest {
@@ -55,7 +60,7 @@ public class CreateFileForWebsocketLoadTest {
     @Test
     void createFile() throws Exception  {
         String usersCount = System.getProperty("userCount");
-        int finalUsersCount = usersCount.isEmpty() ? 10 : Integer.parseInt(usersCount);
+        int finalUsersCount = (usersCount == null || usersCount.isEmpty()) ? 5 : Integer.parseInt(usersCount);
 
         List<JsonData> users = IntStream.range(0, finalUsersCount)
                 .parallel()
@@ -69,6 +74,12 @@ public class CreateFileForWebsocketLoadTest {
 
                     saveUser(firstUser, firstRefreshToken, firstUserRole);
 
+                    try {
+                        sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     var secondUserId = autotestUserConfig.getId();
                     chatApi.createChat(firstUserId, secondUserId);
                     var chatId = chatMembersFunctions.getUsersChat(firstUserId, secondUserId);
@@ -80,7 +91,7 @@ public class CreateFileForWebsocketLoadTest {
                     data.setChatId(chatId.toString());
                     return data;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         JsonMapper jsonMapper = new JsonMapper();
         try {

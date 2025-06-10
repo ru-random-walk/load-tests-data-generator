@@ -3,7 +3,7 @@ package ru.random_walk.database.matcher.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import ru.random_walk.database.matcher.entities.prkeys.DayLimitPK;
 
 import java.time.LocalDate;

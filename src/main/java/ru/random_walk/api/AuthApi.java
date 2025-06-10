@@ -26,6 +26,6 @@ public class AuthApi {
                 .contentType("application/x-www-form-urlencoded")
                 .formParams(mapOfRequestParams)
                 .post("/token")
-                .getBody().jsonPath().get("accessToken");
+                .getBody().jsonPath().get("access_token");
     }
 }

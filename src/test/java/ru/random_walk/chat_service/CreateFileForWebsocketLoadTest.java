@@ -29,6 +29,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.lang.Thread.sleep;
+
 @ExtendWith(RestAssuredExtension.class)
 @SpringBootTest(classes = LoadTestsDataGeneratorApplication.class)
 @Tag("websocket-load")
@@ -71,6 +73,12 @@ public class CreateFileForWebsocketLoadTest {
                     UserRole firstUserRole = new UserRole().setUserId(firstUserId).setRoleId(1);
 
                     saveUser(firstUser, firstRefreshToken, firstUserRole);
+
+                    try {
+                        sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
                     var secondUserId = autotestUserConfig.getId();
                     chatApi.createChat(firstUserId, secondUserId);

@@ -31,7 +31,7 @@ public class AuthApi {
         String body = response.getBody().asString();
         System.out.println(body);
         if (body == null || body.isBlank()) {
-            throw new IllegalStateException("Empty or null response body for token refresh" + response);
+            throw new IllegalStateException("Empty or null response body for token refresh" + response.asPrettyString() + " " + response.getStatusCode());
         }
 
         return JsonPath.from(body).getString("access_token");

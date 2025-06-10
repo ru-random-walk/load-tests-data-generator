@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.parsing.Parser;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -14,7 +13,6 @@ public class RestAssuredExtension implements BeforeAllCallback {
     @Override
     public void beforeAll(ExtensionContext context) {
         RestAssured.reset();
-        RestAssured.defaultParser = Parser.JSON;
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(LogDetail.ALL);
         RestAssured

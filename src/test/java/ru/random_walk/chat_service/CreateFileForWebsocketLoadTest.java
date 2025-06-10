@@ -79,7 +79,7 @@ public class CreateFileForWebsocketLoadTest {
                     JsonData data = new JsonData();
                     data.setSender(firstUserId.toString());
                     data.setRecipient(secondUserId.toString());
-                    data.setToken(api.refreshAuthToken(firstUserRefreshToken.toString()).getAccessToken());
+                    data.setToken(api.refreshAuthToken(firstUserRefreshToken.toString()));
                     data.setChatId(chatId.toString());
                     return data;
                 })

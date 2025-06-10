@@ -1,5 +1,6 @@
 package ru.random_walk.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class AuthApi {
     @Autowired
     private AuthApiConfig authApiConfig;
 
-    public TokenResponse refreshAuthToken(String refreshToken) {
+    public String refreshAuthToken(String refreshToken) {
         var mapOfRequestParams = Map.of("grant_type", "refresh_token", "refresh_token", refreshToken);
         return given()
                 .baseUri("https://random-walk.ru:44424/auth")
@@ -25,6 +26,6 @@ public class AuthApi {
                 .contentType("application/x-www-form-urlencoded")
                 .formParams(mapOfRequestParams)
                 .post("/token")
-                .as(TokenResponse.class);
+                .getBody().jsonPath().get("accessToken");
     }
 }
